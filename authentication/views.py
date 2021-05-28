@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, Http404
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.views.generic import View
 from .forms import LoginForm, SignOutForm
@@ -74,7 +73,6 @@ class SignOut(View):
     """
     Sign out view
     """
-
     def post(self, request, *args, **kwargs):
         logout(request)
         return redirect('login_view')

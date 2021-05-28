@@ -37,7 +37,6 @@ class SignOutForm(forms.Form):
         email = forms.EmailField(required=True)
         password1 = forms.CharField(
             widget=forms.PasswordInput(
-                label='Password',
                 attrs={
                     "class": "form-control",
                     "id": "user_password"
@@ -46,7 +45,6 @@ class SignOutForm(forms.Form):
         )
         password2 = forms.CharField(
             widget=forms.PasswordInput(
-                label='Confirm Password',
                 attrs={
                     "class": "form-control",
                     "id": "user_password"
