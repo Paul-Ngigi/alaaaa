@@ -10,7 +10,14 @@ class LoginForm(forms.Form):
     class Meta:
         model = Profile
 
-        username = forms.CharField(max_length=30)
+        username = forms.CharField(
+            widget=forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'id': 'username',
+                }
+            )
+        )
         password = forms.CharField(
             widget=forms.PasswordInput(
                 attrs={
@@ -33,7 +40,7 @@ class SignOutForm(forms.Form):
     class Meta:
         model: Profile
 
-        username = forms.CharField(max_length=30)
+        username = forms.CharField()
         email = forms.EmailField(required=True)
         password1 = forms.CharField(
             widget=forms.PasswordInput(
