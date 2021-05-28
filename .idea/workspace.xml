@@ -4,7 +4,6 @@
     <list default="true" id="5c81da03-7eaa-4ff6-a48b-b68dc7903c95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/authentication/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authentication/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
