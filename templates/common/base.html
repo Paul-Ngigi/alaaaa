@@ -9,19 +9,20 @@
     <title>Awards - {{title}}</title>
     {% endif %}
     <!-- Static files -->
-    {% block styles %}
+    {% block style %}
         {% load static %}
-            {{ bootstrap_css }}
+            {% bootstrap_css %}
     {% endblock %}
 </head>
 <body>
+    {% include 'common/navbar.html' %}
     
     {% block content%}
     {% endblock %}
 
 
     {% block scripts %}
-        {{ bootstrap_javascript }}
+        {% bootstrap_javascript %}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/cc1a8ab208.js" crossorigin="anonymous"></script>
     {% endblock %}
