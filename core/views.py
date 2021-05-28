@@ -8,6 +8,8 @@ User = get_user_model()
 
 # Create your views here.
 class IndexView(View):
+    user = User
+
     @login_required
     def get(self, request, *args, **kwargs):
         template_name = 'core/index.html'

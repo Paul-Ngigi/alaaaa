@@ -55,22 +55,26 @@ class Login(View):
             return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        form = self.form(request.POST or None)
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
+        context = self.context
 
-            user = authenticate(request, username=username, password=password)
+        if request.method == 'POST':
+            form = self.form(request.POST)
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            if username and password:
 
-            if user is None:
-                messages.error(request, "Invalid Login", extra_tags="error")
-                return render(request, self.template_name, self.context)
+                user = authenticate(request, username=username, password=password)
 
-            login(request, user)
-            messages.success(request, f"Welcome {user.username}", extra_tags="success")
-            return redirect('home_view')
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, f"Welcome to Awards", extra_tags="success")
+                    return redirect('home_view')
 
-        return render(request, self.template_name, self.context)
+                else:
+                    messages.error(request, "Invalid Login", extra_tags="error")
+                    return render(request, self.template_name)
+
+        return render(request, self.template_name)
 
 
 class SignOut(View):
