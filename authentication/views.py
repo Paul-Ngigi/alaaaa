@@ -54,8 +54,6 @@ class SignOut(View):
     Sign out view
     """
 
-    def get(self, request, *args, **kwargs):
-        pass
-
     def post(self, request, *args, **kwargs):
-        pass
+        logout(request)
+        return redirect('login_view')
