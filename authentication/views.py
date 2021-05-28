@@ -51,6 +51,8 @@ class Login(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home_view')
+        else:
+            return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
         form = self.form(request.POST or None)
@@ -68,11 +70,14 @@ class Login(View):
             messages.success(request, f"Welcome {user.username}", extra_tags="success")
             return redirect('home_view')
 
+        return render(request, self.template_name, self.context)
+
 
 class SignOut(View):
     """
     Sign out view
     """
+
     def post(self, request, *args, **kwargs):
         logout(request)
         return redirect('login_view')
