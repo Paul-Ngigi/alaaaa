@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'core',
     'bootstrap5',
     'cloudinary',
+    'authentication',
 ]
 
 MIDDLEWARE = [
