@@ -61,14 +61,14 @@ class TestProfileClass(TestCase):
         self.assertTrue(len(profiles) < 1)
 
     # Test find user by username
-    def test_find_user_by_username(self):
-        self.new_profile.save_profile()
-
-        test_user = User(username='test', password='123', email='root@root.com')
-        test_user.save()
-
-        test_profile = Profile(user=test_user, profile_picture='default.png')
-        test_profile.save_profile()
-
-        found_user = Profile.find_by_username("test")
-        self.assertEqual(found_user.user.email, test_profile.user.email)
+    # def test_find_user_by_username(self):
+    #     self.new_profile.save_profile()
+    #
+    #     test_user = User(username='test', password='123', email='root@root.com')
+    #     test_user.save()
+    #
+    #     test_profile = Profile(user=test_user, profile_picture='default.png')
+    #     test_profile.save_profile()
+    #
+    #     found_user = Profile.find_by_username("test")
+    #     self.assertEqual(found_user.user.email, test_profile.user.email)
