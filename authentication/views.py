@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.views.generic import View
-from .forms import RegistrationForm
-from django.contrib import messages
+from .forms import LoginForm, RegistrationForm
 
 User = get_user_model()
 
@@ -14,63 +13,69 @@ class SignUp(View):
     """
     title = 'signup'
 
-    form = RegistrationForm
     template_name = 'authentication/signup.html'
+    context = {"title": title}
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home_view')
+        return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
-        form = self.form()
-        if request.method == 'POST':
-            form = form(request.POST)
-            if form.is_valid():
-                form.save()
+        form = RegistrationForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password1")
+            password2 = form.cleaned_data.get("password2")
+
+            try:
+                user = User.objects.create_user(username, email, password)
+            except:
+                user = None
+
+            if user != None:
                 return redirect('login_view')
+            else:
+                request.session['register_error'] = 1
 
-        else:
-            form = form()
-
-        context = {"form": form, "title": self.title}
+        context = {"form": form}
         return render(request, self.template_name, context)
 
 
 class Login(View):
     """
-    Login view
+    Sign in view
     """
     title = 'Login'
 
+    form = LoginForm
     template_name = 'authentication/signin.html'
     context = {"title", title}
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home_view')
-        else:
-            return render(request, self.template_name)
+        return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
-        context = self.context
-
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+        form = LoginForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
             if username and password:
 
                 user = authenticate(request, username=username, password=password)
 
                 if user is not None:
                     login(request, user)
-                    messages.success(request, f"Welcome to Awards", extra_tags="success")
                     return redirect('home_view')
 
                 else:
-                    messages.error(request, "Invalid Login", extra_tags="error")
-                    return render(request, self.template_name)
+                    request.session['invalid_user'] = 1
 
-        return render(request, self.template_name)
+        context = {"form": form}
+        return render(request, self.template_name, context)
 
 
 class SignOut(View):
