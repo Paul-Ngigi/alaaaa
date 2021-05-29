@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c81da03-7eaa-4ff6-a48b-b68dc7903c95" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/core/migrations/0004_alter_profile_phone_number.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/migrations/0005_alter_profile_user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authentication/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/authentication/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/authentication/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
