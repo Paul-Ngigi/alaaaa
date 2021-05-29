@@ -43,13 +43,13 @@ class Project(models.Model):
         return self.title
 
 
-class Votes(models.Model):
-    design = models.IntegerField(validators=[MaxValueValidator(1), MaxValueValidator(10)])
-    usability = models.IntegerField(validators=[MaxValueValidator(1), MaxValueValidator(10)])
-    creativity = models.IntegerField(validators=[MaxValueValidator(1), MaxValueValidator(10)])
-    content = models.IntegerField(validators=[MaxValueValidator(1), MaxValueValidator(10)])
+class Vote(models.Model):
+    design = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    usability = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    creativity = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    content = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.project
+        return self.project.title
