@@ -47,33 +47,41 @@ class Login(View):
     """
     Sign in view
     """
-    title = 'Login'
-
-    form = LoginForm
+    print("anything")
+    form = LoginForm()
     template_name = 'authentication/signin.html'
-    context = {"title", title}
 
     def get(self, request, *args, **kwargs):
+        print("anything1")
         if request.user.is_authenticated:
+            print("anything2")
             return redirect('home_view')
-        return render(request, self.template_name, self.context)
+        return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
-        form = LoginForm(request.POST or None)
+        form = LoginForm(request.POST)
+        print("anything3")
         if form.is_valid():
+            print("anything4")
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
+            print(username)
+            print(password)
             if username and password:
-
+                print("anything5")
                 user = authenticate(request, username=username, password=password)
-
+                print("anything6")
                 if user is not None:
+                    print("anything7")
                     login(request, user)
+                    print("anything8")
                     return redirect('home_view')
 
                 else:
                     request.session['invalid_user'] = 1
 
+        else:
+            print("Eror")
         context = {"form": form}
         return render(request, self.template_name, context)
 
