@@ -3,7 +3,7 @@ from django.views.generic import View
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from .models import Posts, Likes
-from .forms import PostsForm, CommentsForm, VotesForm
+from .forms import PostsForm, CommentsForm, VotesForm, ProfileForm
 
 User = get_user_model()
 
@@ -75,3 +75,17 @@ def voting(request, pk):
             return redirect("/post/" + str(pk) + "/")
         return redirect("/post/" + str(pk) + "/")
     return redirect('index')
+
+class ProfileView(View):
+    """
+    profile view
+    """
+    def get(self, request, *args, **kwargs):
+        form = ProfileForm()
+        return render(request, "core/profile.html", {"form":form})
+
+    def post (self, request, *args, **kwargs):
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect("profile_view")

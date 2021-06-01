@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.views.generic import View
 from .forms import LoginForm, RegistrationForm
+from core.models import Profile
 
 User = get_user_model()
 
@@ -31,7 +32,8 @@ class SignUp(View):
 
             try:
                 user = User.objects.create_user(username, email, password)
-                print("alaaaaaaaaaa")
+                profile=Profile(user=user)
+                profile.save()
             except:
                 user = None
 
