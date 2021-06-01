@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'bootstrap5',
     'cloudinary',
     'authentication',
+    'pyuploadcare.dj',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,7 @@ cloudinary.config(
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+UPLOADCARE = {
+    'pub_key': '482c3d0a6e7b6fca5824',
+    'secret': 'dd92928766640b0d2424',
+}

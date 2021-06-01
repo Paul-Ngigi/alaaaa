@@ -1,24 +1,18 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from pyuploadcare.dj.models import ImageField, FileField
+from django.core.validators import MinValueValidator,MaxValueValidator
+from django.db import models
+from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 from cloudinary.models import CloudinaryField
-from django.core.validators import MinValueValidator, MaxValueValidator
-
 # Create your models here.
-User = get_user_model()
-
 
 class Profile(models.Model):
-    """
-    Profile class containing user model
-    """
-    user = models.ForeignKey(User, blank=False, on_delete=models.CASCADE, related_name="profile_user")
-    profile_picture = CloudinaryField()
-    bio = models.CharField(max_length=300, blank=True, null=True)
-    phone_number = models.CharField(max_length=10, blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
-
-    def __str__(self):
-        return f'{self.user.username}'
+    user = models.OneToOneField(User,on_delete=models.CASCADE,
+        related_name='profile')
+    dp = ImageField(manual_crop='1024x1024')
+    bio = HTMLField(max_length=500)
+    phone_number = models.BigIntegerField()
 
     def save_profile(self):
         self.save()
@@ -26,30 +20,85 @@ class Profile(models.Model):
     def delete_profile(self):
         self.delete()
 
+    def __str__(self):
+        return self.user.username
+
+
+class Posts(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=5000, null=True)
+    link = models.URLField()
+    image1 = ImageField(manual_crop='1024x1024')
+    image2 = ImageField(manual_crop='1024x1024')
+    image3 = ImageField(manual_crop='1024x1024')
+    postedon = models.DateTimeField(auto_now_add=True)
+
+
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        ordering = ['-id']
+
     @classmethod
-    def find_by_username(cls, search_term):
-        user = cls.objects.filter(user__username__icontains=search_term)
-        return user
+    def save_post(self):
+        self.save()
 
+    @classmethod
+    def get_posts(cls):
+         posts = cls.objects.all()
+         return posts
 
-class Project(models.Model):
-    title = models.CharField(max_length=30)
-    project_screenshot = CloudinaryField()
-    website_url = models.URLField()
-    project_owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    date_posted = models.DateTimeField(auto_now_add=True)
+    @classmethod
+    def delete_post(self):
+        self.delete()
 
-    def __str__(self):
-        return self.title
+    @classmethod
+    def delete_image_by_id(cls, id):
+        post = cls.objects.filter(pk=id)
+        post.delete()
 
+    @classmethod
+    def get_image_by_id(cls, id):
+        post = cls.objects.get(pk=id)
+        return post
 
-class Vote(models.Model):
-    design = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
-    usability = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
-    creativity = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
-    content = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+class Comments(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='comments')
+    post = models.ForeignKey(Posts,on_delete=models.CASCADE,
+        related_name='comments')
+    comment = models.CharField(max_length=2000)
 
-    def __str__(self):
-        return self.project.title
+    @classmethod
+    def save_comment(self):
+        self.save()
+
+    @classmethod
+    def get_comment(cls):
+         posts = cls.objects.all()
+         return posts
+
+    @classmethod
+    def delete_comment(self):
+        self.delete()
+
+    @classmethod
+    def delete_comment_by_id(cls, id):
+        comment = cls.objects.filter(pk=id)
+        comment.delete()
+
+    @classmethod
+    def get_comment_by_id(cls, id):
+        comment = cls.objects.get(pk=id)
+        return comment
+
+class Likes(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post =  models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='likes')
+    design = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(10)])
+    usability = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(10)])
+    creativity = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(10)])
+    content = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(10)])
+
